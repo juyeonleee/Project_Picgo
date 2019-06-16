@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const router = express.Router()
 const multer = require('multer')
 const path = require('path')
-
+const mongoose = require('mongoose')
 
 const imgUploader = multer({
 
@@ -32,14 +32,16 @@ const imgUploader = multer({
     limit:{filesize:5 * 1024 * 1024 } // 파일 크기 제한 5MB
 });
 
-router.post('/',imgUploader.single('img'),async (req,res)=>{
+router.post('/',imgUploader.single('img'), async (req,res)=>{
    const { userId } = req.body
    const { path } = req.file
 
+   const locationId = mongoose.Types.ObjectId('5d05b5b26ddd3612b4e54b2f');
    console.log(req.file)
    const newPhoto = new Photo({
        userId,
-       photoPath:path
+       photoPath:path,
+       locationId
    })
 
    await newPhoto.save()

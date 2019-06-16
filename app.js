@@ -7,7 +7,7 @@ const joinRouter = require('./routers/join')
 const loginRouter = require('./routers/login')
 const mypageRouter = require('./routers/mypage')
 const uploadRouter = require('./routers/upload')
-
+const timelineRouter = require('./routers/timeline')
 const addgpsRouter = require('./routers/addgps')
 require('dotenv').config();
 
@@ -27,7 +27,7 @@ connect()
 app.use('/join',joinRouter)
 app.use('/login',loginRouter)
 app.use('/mypage',mypageRouter)
-
+app.use('/timeline',timelineRouter)
 app.use('/addgps',addgpsRouter)
 app.use('/hello2',(req,res,next)=>{
 

@@ -1,21 +1,48 @@
 const express = require('express')
-const User = require('../schemas/photo')
-const Photo = require('../schemas/location')
+
+const User = require('../schemas/user')
+const Photo = require('../schemas/photo')
+const Location = require('../schemas/location')
 const bcrypt = require('bcrypt')
 const router = express.Router()
 const mongoose = require('mongoose');
 
-router.get('/mylist/:geometry',async (req,res)=>{ //userId값입력하면
+router.get("/view/:id", async (req,res) => {
+    const _id = mongoose.Types.ObjectId(req.params.id);
+    let selectedPhoto = await Photo.findOne(_id)
 
-    const userId = req.params.userId;//userId받아옴
+    selectedPhoto.view =  selectedPhoto.view+1
 
-    const photo = await Photo.find({userId}).populate('photo').populate('user').sort('createAt');
-    //photo에  Photo컬렉션에서 ObjectID.userId값을 찾아서 photo랑user테이블 조인시킨다
+    res.status(201)
+    res.json({result:1,selectedPhoto})//photo 조인시킨 거
 
-    console.log(photo);
 
-    if(photo.length > 0){//0이상이면
+    await selectedPhoto.save()
+})
+router.get('/location/:id',async (req,res) => {
+    const locationId = mongoose.Types.ObjectId(req.params._id);//locationId받아옴
+    const photos = await Photo.find({locationId})
+    if(photos.length > 0){//0이상이면
+        
+        res.json({result:1,photos})//photo 조인시킨 거
 
+    }else{
+        res.status(200);
+        res.json({result:0})
+    }
+})
+router.get('/best/:_id',async (req,res)=>{ //locationId값입력하면
+
+    const locationId = mongoose.Types.ObjectId(req.params._id);//locationId받아옴
+
+    // const location = await Location.find({locationId})
+    // //photo에  Photo컬렉션에서 ObjectID.userId값을 찾아서 photo랑user테이블 조인시킨다
+
+    const photos = await Photo.find({locationId}).sort('view')
+
+    console.log(photos)
+    if(photos.length > 0){//0이상이면
+        let photo = photos[photos.length-1]
         res.json({result:1,photo})//photo 조인시킨 거
 
     }else{
