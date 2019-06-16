@@ -12,7 +12,7 @@ const photoSchema = new Schema({
         required: true
     },
      locationId:{
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: "Location",
         required: true
     },

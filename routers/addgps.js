@@ -1,5 +1,6 @@
 const express = require('express')
 const Location = require('../schemas/location')
+const Photo = require('../schemas/photo')
 const bcrypt = require('bcrypt')
 const router = express.Router()
 
@@ -7,17 +8,42 @@ const router = express.Router()
 
 router.post('/',async (req,res,next)=>{
 
-    const {locationId ,longtitute,latitute} = req.body
  
-    console.log(location);
-
+ const {
+    address,
+    region_1depth_name,
+    region_2depth_name,
+    region_3depth_name,
+    region_4depth_name,
+    X,
+    Y} = req.body
+ 
+   console.log( address,
+    region_1depth_name,
+    region_2depth_name,
+    region_3depth_name,
+    region_4depth_name,
+    X,
+    Y)
         const newLocation = new Location({
-            locationId,
-            geometry:{type:'point',coordinates:[longtitute,latitute]}
+         
+            address,
+            region_1depth_name,
+            region_2depth_name,
+            region_3depth_name,
+            region_4depth_name,
+            X,
+            Y
+            
         });
-        await newLocation.save(); 
-        res.status(201);
-        res.json({result:1})
+        console.log(newLocation)
+
+        await newLocation.save((err,location)=>{
+            console.log(location)
+                res.status(201);
+                res.json({result:1,location:location._id})
+           
+        })
 
     
 })
