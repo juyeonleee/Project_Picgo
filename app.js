@@ -9,6 +9,7 @@ const mypageRouter = require('./routers/mypage')
 const uploadRouter = require('./routers/upload')
 const timelineRouter = require('./routers/timeline')
 const addgpsRouter = require('./routers/addgps')
+const findBy2depthRouter = require('./routers/findBy2depth')
 require('dotenv').config();
 
 //Init 
@@ -25,7 +26,8 @@ app.use('/ImgUploads',express.static(path.join(__dirname,'ImgUploads')));
 connect()
 
 app.use('/join',joinRouter)
-app.use('/login',loginRouter)
+app.use('/login', loginRouter)
+app.use('/findBy2depth', findBy2depthRouter)
 app.use('/mypage',mypageRouter)
 app.use('/timeline',timelineRouter)
 app.use('/addgps',addgpsRouter)
